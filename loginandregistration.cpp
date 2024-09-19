@@ -31,7 +31,7 @@ int main(){
     Register *acc = new Register[count];
     int i = 0;
     do{
-        std::cout<<"\n\t\tMenu"<<std::endl<<"1.Sign in\n2.Log in\n3.Sign Out\n4.Exit\n"<<std::endl;
+        std::cout<<"\n\t\tMenu"<<std::endl<<"1.Sign in\n2.Log in\n3.Sign Out\n4.Exit\n"<<std::endl<<"Enter your choice: ";
         std::cin>>choice;
         switch(choice){
             case '1':
