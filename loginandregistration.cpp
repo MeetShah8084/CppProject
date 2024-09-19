@@ -1,6 +1,6 @@
 #include<iostream>  
 #include<string.h>
-
+#include "getch.h"
 
 
 class Register{
