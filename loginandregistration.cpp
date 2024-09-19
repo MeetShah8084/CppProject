@@ -1,7 +1,6 @@
 #include<iostream>  
 #include<string.h>
 
-void showdetails();    
 
 
 class Register{
@@ -9,7 +8,6 @@ class Register{
     int id;
     char passwd[10];
     public:
-    friend void showdetails();
     char username[100]; 
     static int count;    
     void registerUser(); 
@@ -33,7 +31,7 @@ int main(){
     Register *acc = new Register[count];
     int i = 0;
     do{
-        std::cout<<"\n\t\tMenu"<<std::endl<<"1.Sign in\n2.Log in\n3.Sign Out\n4.Show details\n5.Exit\n"<<std::endl;
+        std::cout<<"\n\t\tMenu"<<std::endl<<"1.Sign in\n2.Log in\n3.Sign Out\n4.Exit\n"<<std::endl;
         std::cin>>choice;
         switch(choice){
             case '1':
@@ -50,7 +48,7 @@ int main(){
             loggedin = -1;
             std::cout<<"Succesfully signed out!!!"<<std::endl;
             break;
-            case '5':
+            case '4':
                 std::cout<<"Exiting...."<<std::endl;
                 return 0;
             break;
@@ -108,12 +106,7 @@ int Login(Register* ee,int n){
         }
     }
     else{
-        std::cout<<"Wrong username"<<std::endl;
+        std::cout<<"Wrong username or password"<<std::endl;
         return -1;
     }
-}
-
-
-void showdetails(){
-
 }
