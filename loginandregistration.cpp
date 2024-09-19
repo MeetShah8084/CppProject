@@ -1,6 +1,5 @@
 #include<iostream>  
 #include<string.h>
-#include "getch.h"
 
 
 class Register{
@@ -37,6 +36,10 @@ int main(){
             case '1':
             if(loggedin == 0){
                 std::cout<<"Please Sign out to create new account"<<std::endl;
+                break;
+            }
+            if(Register::count >= count){
+                std::cout<<"Number of users Full!!!"<<std::endl;
                 break;
             }
             acc[i].registerUser();
