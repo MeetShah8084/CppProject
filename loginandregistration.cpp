@@ -45,11 +45,20 @@ int main(){
             acc[i].registerUser();
             break;
             case '2':
+            if(loggedin == 0){
+                std::cerr<<"Please sign out to log in with different account " <<std::endl;
+                break;
+            }
             loggedin = Login(acc,count);
             break;
             case '3':
-            loggedin = -1;
-            std::cout<<"Succesfully signed out!!!"<<std::endl;
+            if(loggedin == 0){
+                loggedin = -1;
+                std::cout<<"Succesfully signed out!!!"<<std::endl;
+            }
+            else{
+                std::cout<<"Please log in first!!"<< std::endl;
+            }
             break;
             case '4':
                 std::cout<<"Exiting...."<<std::endl;
