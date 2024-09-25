@@ -16,14 +16,13 @@ class Register{
 int Login(Register* ee,int n);
 
 
-
 int loggedin = -1;
 char choice='1';
 int Register::count = 0;
 
 
 int main(){
-    
+
     int count;
     std::cout<<"Enter the number of users : ";
     std::cin>>count;
