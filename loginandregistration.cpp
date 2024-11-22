@@ -1,5 +1,29 @@
 #include<iostream>  
 #include<string.h>
+#include <unistd.h>
+#include <termios.h>
+
+char getch(void)
+{
+    char buf = 0;
+    struct termios old = {0};
+    fflush(stdout);
+    if(tcgetattr(0, &old) < 0)
+        perror("tcsetattr()");
+    old.c_lflag &= ~ICANON;
+    old.c_lflag &= ~ECHO;
+    old.c_cc[VMIN] = 1;
+    old.c_cc[VTIME] = 0;
+    if(tcsetattr(0, TCSANOW, &old) < 0)
+        perror("tcsetattr ICANON");
+    if(read(0, &buf, 1) < 0)
+        perror("read()");
+    old.c_lflag |= ICANON;
+    old.c_lflag |= ECHO;
+    if(tcsetattr(0, TCSADRAIN, &old) < 0)
+        perror("tcsetattr ~ICANON");
+    return buf;
+ }
 
 
 class Register{
@@ -15,8 +39,7 @@ class Register{
 
 int Login(Register* ee,int n);
 
-
-int loggedin = -1;
+bool loggedin = 0;
 char choice='1';
 int Register::count = 0;
 
@@ -28,31 +51,36 @@ int main(){
     std::cin>>count;
     Register *acc = new Register[count];
     int i = 0;
-    do{
+    do{ 
+        if(loggedin == false){
         std::cout<<"\n\t\tMenu"<<std::endl<<"1.Sign in\n2.Log in\n3.Sign Out\n4.Exit\n"<<std::endl<<"Enter your choice: ";
+        }
+        else{
+        std::cout<<"\n\t\t"<< std::endl<<"\t\tMenu"<<std::endl<<"1.Sign in\n2.Log in\n3.Sign Out\n4.Exit\n"<<std::endl<<"Enter your choice: ";
+        }
         std::cin>>choice;
         switch(choice){
             case '1':
-            if(loggedin == 0){
+            if(loggedin == 1){
                 std::cout<<"Please Sign out to create new account"<<std::endl;
                 break;
             }
-            if(Register::count >= count){
+            else if(Register::count >= count){
                 std::cout<<"Number of users Full!!!"<<std::endl;
                 break;
             }
             acc[i].registerUser();
             break;
             case '2':
-            if(loggedin == 0){
-                std::cerr<<"Please sign out to log in with different account " <<std::endl;
+            if(loggedin == 1){
+                std::cout<<"Please sign out to log in with different account " <<std::endl;
                 break;
             }
             loggedin = Login(acc,count);
             break;
             case '3':
-            if(loggedin == 0){
-                loggedin = -1;
+            if(loggedin == 1){
+                loggedin = 0;
                 std::cout<<"Succesfully signed out!!!"<<std::endl;
             }
             else{
@@ -78,7 +106,15 @@ void Register::registerUser(){
     std::cout<<"Enter the username:"<<std::endl;
     std::cin >> this->username;
     std::cout<<"Enter the password (10) : " <<std::endl;
-    std::cin>>this->passwd;
+    for(int i = 0;i < sizeof(passwd) || passwd[i] == '\n';i++){
+        passwd[i] = getch();
+        std::cout<<'*';
+        if(passwd[i] == '\n'){
+            passwd[i]='\0';
+            break; 
+        }
+    }
+    std::cout<<'\n';
     this->id = ++Register::count;
     this->id += 1000;
     std::cout<<"Your id is "<<id << std::endl;
