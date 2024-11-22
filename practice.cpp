@@ -5,7 +5,7 @@ using namespace std;
 int main(){
     fstream f1,f2;
     f1.open("srcc.txt",ios::in);
-    f2.open("dest.txt",ios::out | ios::ate);
+    f2.open("dest.txt",ios::out | ios::ate | ios::trunc);
     if(!f1 || !f2){
         cout<< "Error Opening file!!" << endl;
         f1.close();
@@ -18,6 +18,7 @@ int main(){
             cout<<ch;
         }
     }
+    cout << endl;
     f1.close();
     f2.close();
     return 0;
